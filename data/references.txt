@@ -1,0 +1,24 @@
+The data contain in thermo.dat come from the NASA Gleen research center
+and was provide by Bonnie McBride.
+
+The file propellant.dat come from the package of propep.
+The following entrie have been add to propellant.dat by R.Nakka.
+
+--------------------------------------------------------
+
+PEPCODED.DAF file revision 1.0 by R.Nakka  7 Nov. 1999
+
+The following entries have been added to the pepcoded.daf file:
+
+    1093 DEXTROSE (GLUCOSE)              6C  12H   6O   0    0    0  -1689 .0567]
+    1094 SORBITOL                        6C  14H   6O   0    0    0  -1776 .0531]
+    1095 BITUMEN (ASPHALT)              84C  11H   3O   1N   1S   0   -351 .0400]
+    1096 CHARCOAL (OAK)                 71C   3H  13O   1N   0    0   -396 .0206]
+    1097 CHARCOAL (MAPLE)               79C   3H  14O   0    0    0   -222 .0206]
+    1098 EICOSANE (PARAFFIN)            20C  42H   0    0    0    0   -469 .0000] 
+
+References:
+1093,1094,1098:  NIST WebBook  http://webbook.nist.gov/chemistry
+1095-1097:       Journal of Pyrotechnics, Issue No.9 (1999)
+
+
