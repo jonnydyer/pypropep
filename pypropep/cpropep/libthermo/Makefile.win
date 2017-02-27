@@ -1,0 +1,50 @@
+
+CC         = bcc32
+CPP32      = cpp32
+LIBRARIAN  = tlib
+LINKER     = ilink32
+RC         = brc32
+
+COPT = -3 -O2 -w-8004 -w-8012 -w-8057 -IC:\borland\bcc55\include
+LDOPT = -LC:\borland\bcc55\lib
+
+INCLUDEDIR = -I..\..\libnum\ -I.
+
+DEF = -DBORLAND
+
+COMPAT_LIBNAME  = compat.lib
+CPROPEP_LIBNAME = cpropep.lib
+THERMO_LIBNAME  = thermo.lib
+
+COMPAT_LIBOBJS  = compat.obj getopt.obj
+THERMO_LIBOBJS  = load.obj thermo.obj
+CPROPEP_LIBOBJS = equilibrium.obj print.obj performance.obj derivative.obj
+
+TLIBCOMPAT      = +compat.obj +getopt.obj
+TLIBTHERMO      = +load.obj +thermo.obj
+TLIBCPROPEP     = +equilibrium.obj +print.obj +performance.obj +derivative.obj
+.SUFFIXES: .c
+
+all: $(CPROPEP_LIBNAME) $(THERMO_LIBNAME) $(COMPAT_LIBNAME)
+
+.c.obj:
+        $(CC) $(DEF) $(INCLUDEDIR) $(COPT) -c $*.c -o $*.obj
+
+$(COMPAT_LIBNAME): $(COMPAT_LIBOBJS)
+        tlib $@ $(TLIBCOMPAT)
+
+$(CPROPEP_LIBNAME): $(CPROPEP_LIBOBJS)
+        tlib $@ $(TLIBCPROPEP)
+
+$(THERMO_LIBNAME): $(THERMO_LIBOBJS)
+        tlib $@ $(TLIBTHERMO)
+	
+clean:
+        del *.obj
+        del *.bak
+	del *.tds
+
+deep-clean: clean
+        del $(COMPAT_LIBNAME)
+        del $(CPROPEP_LIBNAME)
+        del $(THERMO_LIBNAME)

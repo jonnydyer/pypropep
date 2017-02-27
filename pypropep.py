@@ -1,4 +1,0 @@
-'''
-Python interface to cpropep
-'''
-
