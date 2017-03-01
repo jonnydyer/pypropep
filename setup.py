@@ -10,7 +10,7 @@ setup(name='pypropep',
       license='GPLv3',
       author='Jonny Dyer',
       author_email='jonny.dyer@gmail.com',
-      packages=['pypropep'],
+      packages=['pypropep', 'pypropep.cpropep'],
       package_data={"pypropep" : ["data/*.dat"]},
       ext_modules=[cpropep_build.ffibuilder.distutils_extension()],
       )

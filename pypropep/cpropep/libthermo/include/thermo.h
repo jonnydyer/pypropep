@@ -145,22 +145,6 @@ int temperature_check(int sp, float T);
 
 double transition_temperature(int sp, float T);
 
-/*************************************************************
-FUNCTION: Return the variation of enthalpy of the molecule in 
-          thermo_list[sp] between the temperature T in K and
-	  298.15 K.
-
-PARAMETER: sp is the position in the array of the molecule
-           T is the temperature in K
-
-COMMENTS: It call enthalpy(...) for the enthalpy at temperature 
-          T and use the field heat of thermo_t for the enthalpy
-	  at 298.15
-
-AUTHOR: Antoine Lefebvre
-**************************************************************/
-double delta_enthalpy(int sp, float T);
-
 double propellant_enthalpy(equilibrium_t *e);
 double product_enthalpy(equilibrium_t *e);
 double product_entropy(equilibrium_t *e);
