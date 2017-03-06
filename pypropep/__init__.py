@@ -1,6 +1,7 @@
 import os
 from attrdict import AttrDict
 from cpropep._cpropep import ffi, lib
+from case import Case
 
 FILE_PATH = os.path.abspath(__file__)
 THERMO_FILE = os.path.dirname(FILE_PATH) + '/data/thermo.dat'
@@ -16,7 +17,7 @@ def __convert_struct_field( s, fields ):
 def convert_to_python(s):
     '''
     Given a cdata struct, returns a dict with all of the parsable
-    members.  Motivated by :
+    members.  Borrowed with mods from :
     http://stackoverflow.com/questions/20444546/python-cffi-convert-structure-to-dictionary
     '''
     if isinstance(s, ffi.CData) == False:
