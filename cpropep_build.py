@@ -199,6 +199,19 @@ double gibbs_0(int sp, float T);
 double gibbs(int sp, state_t st, double nj_n_n, float T, float P);
 double heat_of_formation(int molecule);
 double propellant_molar_mass(int molecule);
+
+//**** libcpropep/equillibrium.h ****//
+int list_element(equilibrium_t *e);
+int reset_element_list(equilibrium_t *e);
+int list_product(equilibrium_t *e);
+int initialize_equilibrium(equilibrium_t *e);
+int reset_equilibrium(equilibrium_t *e);
+int copy_equilibrium(equilibrium_t *dest, equilibrium_t *src);
+int compute_thermo_properties(equilibrium_t *e);
+int set_state(equilibrium_t *e, double T, double P);
+int add_in_propellant(equilibrium_t *e, int sp, double mol);
+int equilibrium(equilibrium_t *equil, problem_t P);
+double product_molar_mass(equilibrium_t *e);
     """)
 
 if __name__ == "__main__":
