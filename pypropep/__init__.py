@@ -51,16 +51,16 @@ def init(thermo_file=None, propellant_file=None):
 
     r = lib.load_thermo(THERMO_FILE)
     if r > 0:
-        print 'Loaded %d thermo species' % (r)
+        print 'Loaded {} thermo species'.format(r)
     else:
-        print 'Failed to load thermo file %s' % (THERMO_FILE)
+        print 'Failed to load thermo file {}'.format(THERMO_FILE)
 
     r = lib.load_propellant(PROPELLANT_FILE)
 
     if r > 0:
-        print 'Loaded %d propellants' % (r)
+        print 'Loaded {} propellants'.format(r)
     else:
-        print 'Failed to load propellant file %s' % (PROPELLANT_FILE)
+        print 'Failed to load propellant file {}'.format(PROPELLANT_FILE)
 
     SPECIES = dict()
     PROPELLANTS = dict()
@@ -75,7 +75,7 @@ def init(thermo_file=None, propellant_file=None):
         SPECIES[name] = AttrDict(convert_to_python(s))
         SPECIES[name]['id'] = i
         if len(SPECIES) <= l:
-            raise RuntimeWarning('Species %d, %s:%s dropped' % (i, name, 
+            raise RuntimeWarning('Species {}, {}:{} dropped'.format(i, name, 
                 str(SPECIES[name])))
     
     # Build propellants dict
@@ -88,5 +88,5 @@ def init(thermo_file=None, propellant_file=None):
         PROPELLANTS[name] = Propellant(convert_to_python(p))
         PROPELLANTS[name]['id'] = i
         if len(PROPELLANTS) <= l:
-            raise RuntimeWarning('Propellant %d, %s:%s dropped' % (i, 
+            raise RuntimeWarning('Propellant {}, {}:{} dropped'.format(i, 
                 name, str(PROPELLANTS[name])))

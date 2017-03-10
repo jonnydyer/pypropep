@@ -12,7 +12,7 @@ class Propellant(dict):
         super(Propellant, self).__init__(*args, **kwargs)
     
     def __str__(self):
-        return "Propellant: %s [%d]" % (self['name'], self['id'])
+        return "Propellant: {} [{}]".format(self['name'], self['id'])
     
     def __repr__(self):
         return super(Propellant,self).__repr__()

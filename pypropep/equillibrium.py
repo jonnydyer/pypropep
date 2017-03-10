@@ -63,8 +63,8 @@ class Equillibrium(object):
         for i in xrange(self._equil.propellant.ncomp):
             ind = self._equil.propellant.molecule[i]
             name = ffi.string(lib.propellant_list[ind].name)
-            s += "\t%s - %0.3f mol\n" % (name, self._equil.propellant.coeff[i])
-        s += "python composition list: %s" % (str(self.propellants))
+            s += "\t{} - {:.3f} mol\n".format(name, self._equil.propellant.coeff[i])
+        s += "python composition list: {}".format(str(self.propellants))
     
     def __repr__(self):
         return self.__str__()
