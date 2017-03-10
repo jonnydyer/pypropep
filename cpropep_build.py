@@ -115,11 +115,7 @@ typedef struct _equilib_prop
 
 
 typedef struct _new_equilibrium
-{  
-  bool equilibrium_ok;  /* true if the equilibrium have been compute */
-  bool properties_ok;   /* true if the properties have been compute  */
-  bool performance_ok;  /* true if the performance have been compute */
-
+{
   //temporarily
   double entropy;
   
@@ -128,7 +124,7 @@ typedef struct _new_equilibrium
   product_t          product;
   equilib_prop_t     properties;
   performance_prop_t performance;
-  
+  ...;
 } equilibrium_t;
 
 //**** libthermo/load.h ****//
@@ -201,9 +197,7 @@ double heat_of_formation(int molecule);
 double propellant_molar_mass(int molecule);
 
 //**** libcpropep/equillibrium.h ****//
-int list_element(equilibrium_t *e);
 int reset_element_list(equilibrium_t *e);
-int list_product(equilibrium_t *e);
 int initialize_equilibrium(equilibrium_t *e);
 int reset_equilibrium(equilibrium_t *e);
 int copy_equilibrium(equilibrium_t *dest, equilibrium_t *src);
