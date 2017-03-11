@@ -1,5 +1,4 @@
 # file "cpropep_build.py"
-
 import os
 from cffi import FFI
 from glob import glob
@@ -8,6 +7,10 @@ ffibuilder = FFI()
 
 cpropep_libs = ['libnum', 'libthermo', 'libcpropep', 'libcompat']
 inc_dir = [('pypropep/cpropep/' + d + '/include/') for d in cpropep_libs]
+
+MAX_PRODUCT  = 400
+MAX_ELEMENT  = 15
+MAX_COMP     = 20
 
 src_files = []
 for l in cpropep_libs:
@@ -24,46 +27,51 @@ ffibuilder.set_source("pypropep.cpropep._cpropep",
     sources=src_files,
     include_dirs=inc_dir)
 
+# TODO:Find a way to scrape #defines from headers rather than hard coding const
 ffibuilder.cdef("""
 //**** libcpropep/type.h ****//
-typedef enum 
+typedef enum
 {
   GAS,
   CONDENSED,
-  STATE_LAST
+  STATE_LAST,
+  ...
 } state_t;
 
 typedef enum
 {
   TP,          /* assign temperature and pressure */
   HP,          /* assign enthalpy and pressure */
-  SP           /* assign entropy and pressure */
+  SP,           /* assign entropy and pressure */
+  ...
 } problem_t;
 
 typedef enum
 {
   SUBSONIC_AREA_RATIO,
   SUPERSONIC_AREA_RATIO,
-  PRESSURE
+  PRESSURE,
+  ...
 } exit_condition_t;
 
 typedef struct _performance_prop
 {
-  double ae_at;   /* Exit aera / Throat aera              */   
+  double ae_at;   /* Exit aera / Throat aera              */
   double a_dotm;  /* Exit aera / mass flow rate (m/s/atm) */
   double cstar;   /* Characteristic velocity              */
   double cf;      /* Coefficient of thrust                */
   double Ivac;    /* Specific impulse (vacuum)            */
   double Isp;     /* Specific impulse                     */
-  
+  ...;
 } performance_prop_t;
 
 typedef struct _composition
 {
   short  ncomp;              /* Number of different component */
-  short  molecule[];         /* Molecule code                 */
-  double coef[];             /* Moles of molecule             */ 
+  short  molecule[20];      /* Molecule code                 */
+  double coef[20];          /* Moles of molecule             */
   double density;            /* Density of propellant         */
+  ...;
 } composition_t;
 
 typedef struct _product
@@ -72,16 +80,16 @@ typedef struct _product
   bool   product_listed;                 /* true if product have been listed */
   bool   isequil;                        /* true if equilibrium is ok        */
 
-  /* coefficient matrix for the gases */ 
-  unsigned short A[][];
-  
-  short  n_element;             /* n. of different element        */
-  short  element[];             /* element list                   */
-  short  n[];                   /* n. of species for each state   */
-  short  n_condensed;           /* n. of total possible condensed */
-  short  species[][];           /* possible species in each state */
-  double coef[][];              /* coef. of each molecule         */
-  
+  /* coefficient matrix for the gases */
+  unsigned short A[15][400];
+
+  short  n_element;                        /* n. of different element        */
+  short  element[15];                     /* element list                   */
+  short  n[STATE_LAST];                    /* n. of species for each state   */
+  short  n_condensed;                      /* n. of total possible condensed */
+  short  species[STATE_LAST][400];         /* possible species in each state */
+  double coef[STATE_LAST][400];            /* coef. of each molecule         */
+  ...;
 } product_t;
 
 typedef struct _iteration_var
@@ -91,9 +99,9 @@ typedef struct _iteration_var
   double sumn;                     /* sum of all the nj                     */
   double delta_ln_n;               /* delta ln(n) in the iteration process  */
   double delta_ln_T;               /* delta ln(T) in the iteration process  */
-  double delta_ln_nj[];            /* delta ln(nj) in the iteration process */
-  double ln_nj[];                  /* ln(nj) nj are the individual mol/g    */
-
+  double delta_ln_nj[400];         /* delta ln(nj) in the iteration process */
+  double ln_nj[400];               /* ln(nj) nj are the individual mol/g    */
+  ...;
 } iteration_var_t;
 
 typedef struct _equilib_prop
@@ -111,14 +119,19 @@ typedef struct _equilib_prop
   double Cv;   /* Specific heat (kJ/(kg)(K))  */
   double Isex; /* Isentropic exponent (gamma) */
   double Vson; /* Sound speed (m/s)           */
+  ...;
 } equilib_prop_t;
 
 
 typedef struct _new_equilibrium
 {
+  int equilibrium_ok;  /* true if the equilibrium have been compute */
+  int properties_ok;   /* true if the properties have been compute  */
+  int performance_ok;  /* true if the performance have been compute */
+
   //temporarily
   double entropy;
-  
+
   iteration_var_t    itn;
   composition_t      propellant;
   product_t          product;
@@ -138,7 +151,7 @@ typedef struct _thermo
   char    comments[57];
   int     nint;         /* number of different temperature interval */
   char    id[7];        /* identification code */
-  int     elem[5]; 
+  int     elem[5];
   int     coef[5];
   state_t state;
   double  weight;       /* molecular weight */
@@ -147,20 +160,20 @@ typedef struct _thermo
   float   range[4][2];  /* temperature range */
   int     ncoef[4];     /* number of coefficient for Cp0/R   */
   int     ex[4][8];     /* exponent in empirical equation */
-  
+
   double param[4][9];
-  
+
   /* for species with data at only one temperature */
   /* especially condensed                          */
   float temp;
   float enth;
-  
+
 } thermo_t;
 
-typedef struct _propellant{  
+typedef struct _propellant{
   char  name[120]; /* name of the propellant */
   int   elem[6];   /* element in the molecule (atomic number) max 6 */
-  int   coef[6];   /* stochiometric coefficient of this element 
+  int   coef[6];   /* stochiometric coefficient of this element
 		                  (0 for none) */
   float heat;      /* heat of formation in Joule/gram */
   float density;   /* density in g/cubic cm */

@@ -12,12 +12,13 @@ FILE_PATH = os.path.abspath(__file__)
 THERMO_FILE = os.path.dirname(FILE_PATH) + '/data/thermo.dat'
 PROPELLANT_FILE = os.path.dirname(FILE_PATH) + '/data/propellant.dat'
 
-def __convert_struct_field( s, fields ):
-    for field,fieldtype in fields:
+def __convert_struct_field(s, fields):
+    for field, fieldtype in fields:
         if fieldtype.type.kind == 'primitive':
-            yield (field,getattr( s, field ))
+            yield (field, getattr(s, field))
         else:
-            yield (field, convert_to_python( getattr( s, field ) ))
+            yield (field, convert_to_python(getattr(s, field)))
+
 
 def convert_to_python(s):
     '''
@@ -27,26 +28,27 @@ def convert_to_python(s):
     '''
     if isinstance(s, ffi.CData) == False:
         return s
-    
-    type=ffi.typeof(s)
+
+    type = ffi.typeof(s)
     if type.kind == 'struct':
-        return dict(__convert_struct_field( s, type.fields ) )
+        return dict(__convert_struct_field(s, type.fields))
     elif type.kind == 'array':
         if type.item.kind == 'primitive':
             if type.item.cname == 'char':
                 return ffi.string(s)
             else:
-                return [ s[i] for i in range(type.length) ]
+                return [s[i] for i in range(type.length)]
         else:
-            return [ convert_to_python(s[i]) for i in range(type.length) ]
+            return [convert_to_python(s[i]) for i in range(type.length)]
     elif type.kind == 'primitive':
         return int(s)
 
+
 def init(thermo_file=None, propellant_file=None):
     global THERMO_FILE, PROPELLANT_FILE, SPECIES, PROPELLANTS
-    if thermo_file != None:
+    if thermo_file is not None:
         THERMO_FILE = thermo_file
-    if propellant_file != None:
+    if propellant_file is not None:
         PROPELLANT_FILE = propellant_file
 
     r = lib.load_thermo(THERMO_FILE)
@@ -75,9 +77,9 @@ def init(thermo_file=None, propellant_file=None):
         SPECIES[name] = AttrDict(convert_to_python(s))
         SPECIES[name]['id'] = i
         if len(SPECIES) <= l:
-            raise RuntimeWarning("Species {}, {}:{} dropped".format(i, name, 
-                str(SPECIES[name])))
-    
+            raise RuntimeWarning("Species {}, {}:{} dropped".format(i, name,
+                                                            str(SPECIES[name])))
+
     # Build propellants dict
     for i in xrange(lib.num_propellant):
         p = lib.propellant_list[i]
@@ -88,5 +90,5 @@ def init(thermo_file=None, propellant_file=None):
         PROPELLANTS[name] = Propellant(convert_to_python(p))
         PROPELLANTS[name]['id'] = i
         if len(PROPELLANTS) <= l:
-            raise RuntimeWarning("Propellant {}, {}:{} dropped".format(i, 
-                name, str(PROPELLANTS[name])))
+            raise RuntimeWarning("Propellant {}, {}:{} dropped".format(i,
+                                                name, str(PROPELLANTS[name])))
