@@ -76,9 +76,9 @@ typedef struct _composition
 
 typedef struct _product
 {
-  bool   element_listed;                 /* true if element have been listed */
-  bool   product_listed;                 /* true if product have been listed */
-  bool   isequil;                        /* true if equilibrium is ok        */
+  int   element_listed;                 /* true if element have been listed */
+  int   product_listed;                 /* true if product have been listed */
+  int   isequil;                        /* true if equilibrium is ok        */
 
   /* coefficient matrix for the gases */
   unsigned short A[15][400];

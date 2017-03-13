@@ -300,6 +300,7 @@ int compute_thermo_properties(equilibrium_t *e)
   pr->G = (product_enthalpy(e) - product_entropy(e)) * R * pr->T;
   pr->S = product_entropy(e) * R;  
   pr->M = product_molar_mass(e);
+  e->properties_ok = true;
   return 0;
 }
 
@@ -1238,7 +1239,7 @@ int equilibrium(equilibrium_t *equil, problem_t P)
     //fprintf(outputfile, "Maximum number of %d iterations attain\n",
     //        ITERATION_MAX);
     //fprintf(outputfile, "Don't thrust results.\n"); 
-    return ERR_EQUILIBRIUM;
+    return ERR_TOO_MANY_ITER;
   }
   else if (stop)
   {

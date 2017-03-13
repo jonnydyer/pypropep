@@ -3,7 +3,7 @@ from attrdict import AttrDict
 from cpropep._cpropep import ffi, lib
 
 from pypropep.propellant import Propellant
-from pypropep.equillibrium import Equillibrium
+from pypropep.equilibrium import Equilibrium
 from pypropep.case import GenericCase
 
 __all__ = ['Propellant', 'Equillibrium', 'GenericCase', 'init']
@@ -92,3 +92,7 @@ def init(thermo_file=None, propellant_file=None):
         if len(PROPELLANTS) <= l:
             raise RuntimeWarning("Propellant {}, {}:{} dropped".format(i,
                                                 name, str(PROPELLANTS[name])))
+
+def find_propellant(substr):
+    return [value for key, value in PROPELLANTS.items()
+                        if substr in key.lower()]

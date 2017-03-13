@@ -18,5 +18,6 @@
 #define ERR_EQUILIBRIUM      -6
 #define ERR_AERA_RATIO       -7
 #define ERR_RATIO_TYPE       -8
+#define ERR_TOO_MANY_ITER       -9
 
 #endif	/* !defined(RETURN_H) */

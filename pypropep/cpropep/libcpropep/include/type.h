@@ -87,9 +87,9 @@ DATE: February 13, 2000
 ******************************************************************/
 typedef struct _product
 {
-  bool   element_listed;                 /* true if element have been listed */
-  bool   product_listed;                 /* true if product have been listed */
-  bool   isequil;                        /* true if equilibrium is ok        */
+  int   element_listed;                 /* true if element have been listed */
+  int   product_listed;                 /* true if product have been listed */
+  int   isequil;                        /* true if equilibrium is ok        */
 
   /* coefficient matrix for the gases */ 
   unsigned short A[MAX_ELEMENT][MAX_PRODUCT];
@@ -142,9 +142,9 @@ typedef struct _equilib_prop
 
 typedef struct _new_equilibrium
 {  
-  bool equilibrium_ok;  /* true if the equilibrium have been compute */
-  bool properties_ok;   /* true if the properties have been compute  */
-  bool performance_ok;  /* true if the performance have been compute */
+  int equilibrium_ok;  /* true if the equilibrium have been compute */
+  int properties_ok;   /* true if the properties have been compute  */
+  int performance_ok;  /* true if the performance have been compute */
 
   //temporarily
   double entropy;
