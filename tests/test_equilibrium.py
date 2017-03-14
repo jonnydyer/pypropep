@@ -20,6 +20,16 @@ def test_add_propellant(pypropep):
     e.add_propellants([(o2, 1.), (ch4, 1.)])
     print e
 
+def test_equil_modes(pypropep):
+    e = pypropep.Equilibrium()
+    with pytest.raises(ValueError):
+        e.set_state(P=1., type='TP')
+
+    with pytest.raises(ValueError):
+        e.set_state(P=1., T=300., type='HP')
+
+    with pytest.raises(ValueError):
+        e.set_state(P=1., T=300., type='SP')
 
 def test_simp_equil(pypropep):
     e = pypropep.Equilibrium()
@@ -30,7 +40,7 @@ def test_simp_equil(pypropep):
     assert e.equilibrated is True
     assert e.properties_computed is True
 
-def test_composition(pypropep):
+def test_TP_composition(pypropep):
     e = pypropep.Equilibrium()
     n2 = pypropep.PROPELLANTS['NITROGEN (GASEOUS)']
     e.add_propellant(n2, 1.0)
@@ -50,3 +60,25 @@ def test_composition(pypropep):
             assert v == pytest.approx(1.0, 1e-6)
         else:
             assert v == pytest.approx(0.0, 1e-6)
+
+def test_HP_equil(pypropep):
+    e = pypropep.Equilibrium()
+    o2 = pypropep.PROPELLANTS['OXYGEN (GAS)']
+    ch4 = pypropep.PROPELLANTS['METHANE']
+    e.add_propellants([(o2, 1.), (ch4, 1.)])
+    e.set_state(P=1.0, type='HP')
+    assert e.equilibrated is True
+    assert e.properties_computed is True
+    assert e.properties.T > 300.
+
+# def test_SP_equil(pypropep):
+#     e = pypropep.Equilibrium()
+#     o2 = pypropep.PROPELLANTS['OXYGEN (GAS)']
+#     ch4 = pypropep.PROPELLANTS['METHANE']
+#     e.add_propellants([(o2, 1.), (ch4, 1.)])
+#     e.set_state(P=1.0, type='HP')
+#     T = e.properties.T
+#     e.set_state(P=1, type='SP')
+#     assert e.equilibrated is True
+#     assert e.properties_computed is True
+#     assert e.properties.T < 0.5*T

@@ -63,6 +63,7 @@ class Equilibrium(object):
         return sorted(self._composition.items(), key=operator.itemgetter(1),
                       reverse=True)
 
+
     def _compute_product_composition(self):
         if self.equilibrated is False:
             raise RuntimeError("Can't compute product composition until \
@@ -91,24 +92,27 @@ class Equilibrium(object):
                     for mode 'TP'")
             self.properties.T = T
             self.properties.P = P
-            err = lib.equilibrium(self._equil, lib.TP)
-            if err != 0:
-                raise RuntimeError("Equilibrium failed with error: '{}'".format(
-                    RET_ERRORS[err]))
-            self.equilibrated = True
-        elif type == 'HP':
-            if T is not None:
-                raise ValueError("set_state: Temperature must not be specified \
-                    for mode 'HP'")
+            eq_type = lib.TP
 
-        elif type == 'SP':
+        elif type == 'HP' or type == 'SP':
             if T is not None:
                 raise ValueError("set_state: Temperature must not be specified \
-                    for mode 'SP'")
+                    for mode 'HP' or 'SP'")
+            self.properties.P = P
+            if type == 'HP':
+                eq_type = lib.HP
+            else:
+                eq_type = lib.SP
 
         else:
             raise ValueError("set_state: type must be one of ('TP', 'SP', 'HP')!")
 
+        err = lib.equilibrium(self._equil, eq_type)
+        if err != 0:
+            raise RuntimeError("Equilibrium failed with error: '{}'".format(
+                                RET_ERRORS[err]))
+
+        self.equilibrated = True
         self._compute_product_composition()
 
     def __str__(self):
