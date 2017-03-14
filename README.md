@@ -7,3 +7,5 @@ The RocketWorkBench (and hence cpropep) project hasn't seen any activity in clos
 
 ##Basic usage
 
+##More Serious iPython examples
+The best intro to this library is an [iPython Notebook included in the repo](ipython_doc/BasicUsage.ipynb).  Git will kindly render it for you if you don't want to run it yourself.
