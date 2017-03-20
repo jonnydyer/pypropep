@@ -36,6 +36,26 @@ class Propellant(dict):
         return code
 
 
+    def atoms_of(self, element):
+        '''
+        Looks up and returns the number of atoms of
+        element in the propellant
+        '''
+        elem = self['elem']
+        coef = self['coef']
+        if element in EL_SYMBOLS:
+            el_ind = EL_SYMBOLS.index(element)
+        else:
+            print 'blah'
+            RuntimeWarning("Element {0} does not exist".format(element))
+            return 0
+
+        if el_ind in elem:
+            el_ind = elem.index(el_ind)
+            return coef[el_ind]
+
+        return 0
+
     def __str__(self):
         return "Propellant: {} - {} [{}]".format(self.formula(),
                                                  self['name'],

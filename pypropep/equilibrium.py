@@ -6,9 +6,12 @@ from error import RET_ERRORS
 __all__ = ['Equilibrium']
 
 class Equilibrium(object):
-    def __init__(self):
+    def __init__(self, equilibrium_t_ptr=None):
         super(Equilibrium, self).__init__()
-        self._equil = ffi.new("equilibrium_t *")
+        if equilibrium_t_ptr is not None:
+            self._equil = equilibrium_t_ptr
+        else:
+            self._equil = ffi.new("equilibrium_t *")
         lib.initialize_equilibrium(self._equil)
         self.reset()
 
@@ -84,7 +87,6 @@ class Equilibrium(object):
         must be in ('TP', 'SP', 'HP').  If 'TP' temperature must
         be specified; otherwise it must not be.
         '''
-        # TODO: Write tests for these cases!
         self._equil.product.n[lib.CONDENSED] = 0
         if type == 'TP':
             if T is None:
@@ -124,7 +126,8 @@ class Equilibrium(object):
         for i in xrange(self._equil.propellant.ncomp):
             ind = self._equil.propellant.molecule[i]
             name = ffi.string(lib.propellant_list[ind].name)
-            s += "\t{} - {:.3f} mol\n".format(name, self._equil.propellant.coef[i])
+            s += "\t{} - {:.3f} mol\n".format(name,
+                                              self._equil.propellant.coef[i])
 
         s += "State:\n"
         s += "\tPressure: {:.3f} atm \n".format(self.properties.P)
@@ -145,4 +148,3 @@ class Equilibrium(object):
 
     def __repr__(self):
         return self.__str__()
-
