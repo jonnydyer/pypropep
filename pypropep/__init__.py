@@ -6,7 +6,7 @@ from pypropep.propellant import Propellant
 from pypropep.equilibrium import Equilibrium
 from pypropep.case import GenericCase
 
-__all__ = ['Propellant', 'Equillibrium', 'GenericCase', 'init']
+__all__ = ['Propellant', 'Equilibrium', 'GenericCase', 'init']
 
 FILE_PATH = os.path.abspath(__file__)
 THERMO_FILE = os.path.dirname(FILE_PATH) + '/data/thermo.dat'

@@ -1,5 +1,5 @@
 from cpropep._cpropep import ffi, lib
-from equilibrum import Equilibrium
+from pypropep.equilibrium import Equilibrium
 
 __all__ = ['GenericCase']
 
@@ -52,7 +52,7 @@ class GenericCase(object):
             s += "\t{} - {:.3f} mol\n".format(name,
                                               self._equil.propellant.coef[i])
 
-        s += "State:\n"
+        s += "States:\n"
         s += "\tPressure: {:.3f} atm \n".format(self.properties.P)
         s += "\tTemperature: {:.1f} K \n".format(self.properties.T)
         s += "\tEnthalpy: {:.3f} kJ/kg \n".format(self.properties.H)
