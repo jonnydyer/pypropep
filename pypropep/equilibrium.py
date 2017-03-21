@@ -60,7 +60,7 @@ class Equilibrium(object):
         return self._composition
 
     @property
-    def composotion_sorted(self):
+    def composition_sorted(self):
         if self.equilibrated is False:
             return None
         return sorted(self._composition.items(), key=operator.itemgetter(1),
