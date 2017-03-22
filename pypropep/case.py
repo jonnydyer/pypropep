@@ -40,6 +40,10 @@ class GenericCase(object):
             computed = computed and self._equil_objs[i].performance_computed
         return computed
 
+    @property
+    def properties(self):
+        return [p.properties for p in self._equils]
+
     def __str__(self):
         s = "Status:\n"
         s += "\tEquillibrium Computed: {}\n".format(str(self.equilibrated))
