@@ -1,3 +1,4 @@
+import re
 import numpy as np
 import operator
 from cpropep._cpropep import ffi, lib
@@ -117,6 +118,23 @@ class Equilibrium(object):
         self.equilibrated = True
         self._compute_product_composition()
 
+    @property
+    def state_str(self):
+        s = "Pressure: {:.3f} atm \n".format(self.properties.P)
+        s += "Temperature: {:.1f} K \n".format(self.properties.T)
+        s += "Enthalpy: {:.3f} kJ/kg \n".format(self.properties.H)
+        s += "Int. Energy: {:.3f} kJ/kg \n".format(self.properties.U)
+        s += "Gibbs Free Energy: {:.3f} kJ/kg \n".format(self.properties.G)
+        s += "Entropy: {:.3f} kJ/kg-K \n".format(self.properties.S)
+        s += "Molar Mass: {:.3f} g/mol \n".format(self.properties.M)
+        s += "dV_P: {:.3f}\n".format(self.properties.dV_P)
+        s += "dV_T: {:.3f}\n".format(self.properties.dV_T)
+        s += "Cp: {:.3f} kJ/kg-K\n".format(self.properties.Cp)
+        s += "Cv: {:.3f} kJ/kg-K\n".format(self.properties.Cv)
+        s += "gamma: {:.3f}\n".format(self.properties.Isex)
+        s += "Sound Speed: {:.1f} m/s\n\n".format(self.properties.Vson)
+        return s
+
     def __str__(self):
         s = "Status:\n"
         s += "\tEquillibrium Computed: {}\n".format(str(self.equilibrated))
@@ -128,22 +146,8 @@ class Equilibrium(object):
             name = ffi.string(lib.propellant_list[ind].name)
             s += "\t{} - {:.3f} mol\n".format(name,
                                               self._equil.propellant.coef[i])
-
         s += "State:\n"
-        s += "\tPressure: {:.3f} atm \n".format(self.properties.P)
-        s += "\tTemperature: {:.1f} K \n".format(self.properties.T)
-        s += "\tEnthalpy: {:.3f} kJ/kg \n".format(self.properties.H)
-        s += "\tInt. Energy: {:.3f} kJ/kg \n".format(self.properties.U)
-        s += "\tGibbs Free Energy: {:.3f} kJ/kg \n".format(self.properties.G)
-        s += "\tEntropy: {:.3f} kJ/kg-K \n".format(self.properties.S)
-        s += "\tMolar Mass: {:.3f} g/mol \n".format(self.properties.M)
-        s += "\tdV_P: {:.3f}\n".format(self.properties.dV_P)
-        s += "\tdV_T: {:.3f}\n".format(self.properties.dV_T)
-        s += "\tCp: {:.3f} kJ/kg-K\n".format(self.properties.Cp)
-        s += "\tCv: {:.3f} kJ/kg-K\n".format(self.properties.Cv)
-        s += "\tgamma: {:.3f}\n".format(self.properties.Isex)
-        s += "\tSound Speed: {:.1f} m/s\n".format(self.properties.Vson)
-
+        s += "\t" + re.sub(r"(\n)", r"\1\t", self.state_str)
         return s
 
     def __repr__(self):

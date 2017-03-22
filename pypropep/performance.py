@@ -1,22 +1,22 @@
+import re
 from cpropep._cpropep import ffi, lib
 from pypropep.equilibrium import Equilibrium
 
-__all__ = ['GenericCase']
+__all__ = ['RocketPerformance']
 
-class GenericCase(object):
+class RocketPerformance(object):
     '''
     A generic container class for cpropep case's.
     The GenericCase is equivalent to the "TP" option in cpropep where
     temperature and pressure are specified for the equillibrium calculation.
     '''
     def __init__(self, T=300., P=1.):
-        super(GenericCase, self).__init__()
-        self._equils = ffi.new("equilibrium_t[3]")
+        super(RocketPerformance, self).__init__()
+        self._equil_structs = ffi.new("equilibrium_t[3]")
         self._equil_objs = list()
         for i in xrange(3):
-            self._equil_objs.append(
-                Equilibrium(self._equils[i])
-            )
+            e = ffi.addressof(self._equil_structs[i])
+            self._equil_objs.append(Equilibrium(e))
 
     @property
     def equilibrated(self):
@@ -42,7 +42,27 @@ class GenericCase(object):
 
     @property
     def properties(self):
-        return [p.properties for p in self._equils]
+        return [p.properties for p in self._equil_structs]
+
+    def set_state(P, Pe=None, At_Ae=None):
+        if (Pe is not None) and (At_Ae is not None):
+            raise RuntimeError("Only one of Pe or At_Ae may be set at a time")
+
+        if (Pe is None) and (At_Ae is None):
+            pass
+        elif Pe is not None:
+            pass
+        elif At_Ae is not None:
+            pass
+        else:
+            raise RuntimeError("Shouldn't have gotten here")
+
+
+    def add_propellant(self, propellant, mol):
+        self._equil_objs[0].add_propellant(propellant, mol)
+
+    def add_propellants(self, propellant_list):
+        self._equil_objs[0].add_propellants(propellant_list)
 
     def __str__(self):
         s = "Status:\n"
@@ -50,23 +70,17 @@ class GenericCase(object):
         s += "\tProperties Computed: {}\n".format(str(self.properties_computed))
         s += "\tPerformance Computed: {}\n".format(str(self.performance_computed))
         s += "Composition:\n"
-        for i in xrange(self._equil.propellant.ncomp):
-            ind = self._equil.propellant.molecule[i]
+        for i in xrange(self._equil_structs[0].propellant.ncomp):
+            ind = self._equil_structs[0].propellant.molecule[i]
             name = ffi.string(lib.propellant_list[ind].name)
             s += "\t{} - {:.3f} mol\n".format(name,
-                                              self._equil.propellant.coef[i])
+                                              self._equil_structs[0].propellant.coef[i])
 
-        s += "States:\n"
-        s += "\tPressure: {:.3f} atm \n".format(self.properties.P)
-        s += "\tTemperature: {:.1f} K \n".format(self.properties.T)
-        s += "\tEnthalpy: {:.3f} kJ/kg \n".format(self.properties.H)
-        s += "\tInt. Energy: {:.3f} kJ/kg \n".format(self.properties.U)
-        s += "\tGibbs Free Energy: {:.3f} kJ/kg \n".format(self.properties.G)
-        s += "\tEntropy: {:.3f} kJ/kg-K \n".format(self.properties.S)
-        s += "\tMolar Mass: {:.3f} g/mol \n".format(self.properties.M)
-        s += "\tdV_P: {:.3f}\n".format(self.properties.dV_P)
-        s += "\tdV_T: {:.3f}\n".format(self.properties.dV_T)
-        s += "\tCp: {:.3f} kJ/kg-K\n".format(self.properties.Cp)
-        s += "\tCv: {:.3f} kJ/kg-K\n".format(self.properties.Cv)
-        s += "\tgamma: {:.3f}\n".format(self.properties.Isex)
-        s += "\tSound Speed: {:.1f} m/s\n".format(self.properties.Vson)
+        for i,c in enumerate([
+                            '======= Chamber =======',
+                            '======= Throat =======',
+                            '======= Exit =======']):
+            s += "{0}: \n".format(c)
+            s += "\t" + re.sub(r"(\n)", r"\1\t", self._equil_objs[i].state_str)
+
+        return s
