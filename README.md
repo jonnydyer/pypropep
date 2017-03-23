@@ -1,5 +1,6 @@
 # pypropep
 [![Build Status](https://travis-ci.org/jonnydyer/pypropep.svg?branch=master)](https://travis-ci.org/jonnydyer/pypropep)
+[![Coverage Status](https://coveralls.io/repos/github/jonnydyer/pypropep/badge.svg?branch=master)](https://coveralls.io/github/jonnydyer/pypropep?branch=master)
 
 Python interfaces to [cpropep](https://sourceforge.net/projects/rocketworkbench/?source=navbar), a project started ~15 years ago by Antoine Lefebvre and Ray Calkins to implement the [classic Gordon and McBride](https://www.grc.nasa.gov/WWW/CEAWeb/RP-1311.pdf) chemical equillibrium code in C.  
 
