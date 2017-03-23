@@ -7,7 +7,7 @@ python:
 install: 
     - pip install tox-travis
     - pip install coverage
-    - pip install coveralls-python
+    - pip install coveralls
 script: 
     - tox
     - coverage run --source icon_font_to_png -m py.test
