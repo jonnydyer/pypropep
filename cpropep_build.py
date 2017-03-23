@@ -219,6 +219,12 @@ int set_state(equilibrium_t *e, double T, double P);
 int add_in_propellant(equilibrium_t *e, int sp, double mol);
 int equilibrium(equilibrium_t *equil, problem_t P);
 double product_molar_mass(equilibrium_t *e);
+
+//**** libcpropep/performance.h ****//
+int frozen_performance(equilibrium_t *e, exit_condition_t exit_type,
+                       double value);
+int shifting_performance(equilibrium_t *e, exit_condition_t exit_type,
+                         double value);
     """)
 
 if __name__ == "__main__":

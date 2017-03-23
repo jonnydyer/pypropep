@@ -4,9 +4,10 @@ from cpropep._cpropep import ffi, lib
 
 from pypropep.propellant import Propellant
 from pypropep.equilibrium import Equilibrium
-from pypropep.performance import RocketPerformance
+from pypropep.performance import RocketPerformance, FrozenPerformance
 
-__all__ = ['Propellant', 'Equilibrium', 'RocketPerformance', 'init']
+__all__ = ['Propellant', 'Equilibrium', 'RocketPerformance',
+           'FrozenPerformance', 'init']
 
 FILE_PATH = os.path.abspath(__file__)
 THERMO_FILE = os.path.dirname(FILE_PATH) + '/data/thermo.dat'
