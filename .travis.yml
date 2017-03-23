@@ -4,11 +4,14 @@ python:
     - "2.7"
       #    - "3.3"
       #    - "3.4"  
-install: pip install tox-travis
+install: 
+    - pip install tox-travis
+    - pip install coverage
+    - pip install coveralls-python
 script: 
     - tox
     - coverage run --source icon_font_to_png -m py.test
     - coverage report -m
 
 after_success:
-  - coveralls
+    - coveralls
