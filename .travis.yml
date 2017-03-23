@@ -4,5 +4,13 @@ python:
     - "2.7"
       #    - "3.3"
       #    - "3.4"  
-install: pip install tox-travis
-script: tox
+before_install:
+    - pip install pytest pytest-cov
+    - pip install coveralls
+script:
+    - py.test
+after_success:
+    - coveralls
+
+# install: pip install tox-travis
+# script: tox
