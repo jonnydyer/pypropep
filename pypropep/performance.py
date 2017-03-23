@@ -44,19 +44,6 @@ class RocketPerformance(object):
     def properties(self):
         return [p.properties for p in self._equil_structs]
 
-    def set_state(P, Pe=None, At_Ae=None):
-        if (Pe is not None) and (At_Ae is not None):
-            raise RuntimeError("Only one of Pe or At_Ae may be set at a time")
-
-        if (Pe is None) and (At_Ae is None):
-            pass
-        elif Pe is not None:
-            pass
-        elif At_Ae is not None:
-            pass
-        else:
-            raise RuntimeError("Shouldn't have gotten here")
-
 
     def add_propellant(self, propellant, mol):
         self._equil_objs[0].add_propellant(propellant, mol)
@@ -84,3 +71,21 @@ class RocketPerformance(object):
             s += "\t" + re.sub(r"(\n)", r"\1\t", self._equil_objs[i].state_str)
 
         return s
+
+class FrozenPerformance(RocketPerformance):
+    def __init__(self, *args):
+        super(FrozenPerformance, self).__init__(*args)
+
+    def set_state(P, Pe=None, Ae_At=None):
+        if (Pe is not None) and (Ae_At is not None):
+            raise RuntimeError("Only one of Pe or At_Ae may be set at a time")
+
+        if (Pe is None) and (At_Ae is None):
+            raise RuntimeError("At least one of Pe or Ae_at
+        elif Pe is not None:
+            pass
+        elif At_Ae is not None:
+            pass
+        else:
+            raise RuntimeError("Shouldn't have gotten here")
+
