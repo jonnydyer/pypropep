@@ -3,7 +3,7 @@ from cpropep._cpropep import ffi, lib
 from pypropep.equilibrium import Equilibrium
 from pypropep.error import RET_ERRORS
 
-__all__ = ['RocketPerformance', 'FrozenPerformance']
+__all__ = ['RocketPerformance', 'FrozenPerformance', 'ShiftingPerformance']
 
 Ge = 9.80665
 
@@ -48,6 +48,15 @@ class RocketPerformance(object):
         return [p.properties for p in self._equil_structs]
 
     @property
+    def composition(self):
+        return {
+            "chamber" : self._equil_objs[0].composition_sorted,
+            "throat" : self._equil_objs[1].composition_sorted,
+            "exit" : self._equil_objs[2].composition_sorted
+        }
+
+
+    @property
     def performance(self):
         return self._equil_structs[2].performance
 
@@ -57,6 +66,10 @@ class RocketPerformance(object):
 
     def add_propellants(self, propellant_list):
         self._equil_objs[0].add_propellants(propellant_list)
+
+    def set_state(self):
+        for e in self._equil_objs:
+            e._compute_product_composition()
 
     def __str__(self):
         s = "Status:\n"
@@ -82,7 +95,7 @@ class RocketPerformance(object):
             s += "\tCf: {:.5f}\n".format(self._equil_structs[i].performance.cf)
             s += "\tIvac (m/s): {:.5f}\n".format(self._equil_structs[i].performance.Ivac)
             s += "\tIsp (m/s): {:.5f}\n".format(self._equil_structs[i].performance.Isp)
-            s += "\tIsp/g (s): {:.5f}\n".format(self._equil_structs[i].performance.Isp/Ge)
+            s += "\tIsp/g (s): {:.5f}\n\n".format(self._equil_structs[i].performance.Isp/Ge)
 
         return s
 
@@ -110,3 +123,33 @@ class FrozenPerformance(RocketPerformance):
         if err < 0:
             raise RuntimeError("Frozen performance failed with {}".format(
                 RET_ERRORS[err]))
+
+        super(FrozenPerformance, self).set_state()
+
+
+class ShiftingPerformance(RocketPerformance):
+    def __init__(self, *args):
+        super(ShiftingPerformance, self).__init__(*args)
+
+    def set_state(self, P, Pe=None, Ae_At=None):
+        if (Pe is not None) and (Ae_At is not None):
+            raise RuntimeError("Only one of Pe or At_Ae may be set at a time")
+
+        self._equil_structs[0].properties.P = P
+
+        if (Pe is None) and (Ae_At is None):
+            raise RuntimeError("At least one of Pe or Ae_At must be specified")
+        elif Pe is not None:
+            err = lib.shifting_performance(ffi.addressof(self._equil_structs[0]),
+                                         lib.PRESSURE, Pe)
+        elif Ae_At is not None:
+            err = lib.shifting_performance(ffi.addressof(self._equil_structs[0]),
+                                         lib.SUPERSONIC_AREA_RATIO, Ae_At)
+        else:
+            raise RuntimeError("Shouldn't have gotten here")
+
+        if err < 0:
+            raise RuntimeError("Frozen performance failed with {}".format(
+                RET_ERRORS[err]))
+
+        super(ShiftingPerformance, self).set_state()

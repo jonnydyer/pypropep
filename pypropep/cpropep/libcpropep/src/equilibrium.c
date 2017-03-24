@@ -240,6 +240,7 @@ int reset_equilibrium(equilibrium_t *e)
 {
   int i;
 
+  e->equilibrium_ok = false;
   e->itn.n = 0.1;
   /* initialize tho mol number to 0.1mol/(nb of gazeous species) */
   for (i = 0; i < e->product.n[GAS]; i++)
@@ -1250,6 +1251,7 @@ int equilibrium(equilibrium_t *equil, problem_t P)
   }
 
   equil->product.isequil = true;
+  equil->equilibrium_ok = true;
   compute_thermo_properties(equil); 
   derivative(equil);
   

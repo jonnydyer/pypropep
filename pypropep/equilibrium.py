@@ -19,8 +19,8 @@ class Equilibrium(object):
     def reset(self):
         lib.reset_equilibrium(self._equil)
         self._composition = dict()
+        self._composition_condensed = dict()
         self.propellants = []
-        self.equilibrated = False
 
     def __del__(self):
         del self._equil
@@ -51,6 +51,10 @@ class Equilibrium(object):
         return bool(self._equil.performance_ok)
 
     @property
+    def equilibrated(self):
+        return bool(self._equil.equilibrium_ok)
+
+    @property
     def properties(self):
         return self._equil.properties
 
@@ -79,8 +83,14 @@ class Equilibrium(object):
         for i in xrange(self._equil.product.n[lib.GAS]):
             ind = self._equil.product.species[lib.GAS][i]
             name = ffi.string(lib.thermo_list[ind].name)
-            self._composition[name] = self._equil.product.coef[lib.GAS][i] / \
-                mol_g
+            self._composition[name] = \
+                self._equil.product.coef[lib.GAS][i] / mol_g
+
+        for i in xrange(self._equil.product.n[lib.CONDENSED]):
+            ind = self._equil.product.species[lib.CONDENSED][i]
+            name = ffi.string(lib.thermo_list[ind].name)
+            self._composition_condensed[name] = \
+                self._equil.product.coef[lib.CONDENSED][i] / mol_g
 
     def set_state(self, P, T=None, type='HP'):
         '''
@@ -115,7 +125,6 @@ class Equilibrium(object):
             raise RuntimeError("Equilibrium failed with error: '{}'".format(
                                 RET_ERRORS[err]))
 
-        self.equilibrated = True
         self._compute_product_composition()
 
     @property
