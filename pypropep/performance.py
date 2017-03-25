@@ -55,6 +55,13 @@ class RocketPerformance(object):
             "exit" : self._equil_objs[2].composition_sorted
         }
 
+    @property
+    def composition_condensed(self):
+        return {
+            "chamber" : self._equil_objs[0].composition_condensed,
+            "throat" : self._equil_objs[1].composition_condensed,
+            "exit" : self._equil_objs[2].composition_condensed
+        }
 
     @property
     def performance(self):
@@ -62,10 +69,40 @@ class RocketPerformance(object):
 
 
     def add_propellant(self, propellant, mol):
+        '''
+        Addes propellant to the pre-equilibrium mixture.
+        propellant must be a Propellant instance and mol is the number of
+        mols.
+        '''
         self._equil_objs[0].add_propellant(propellant, mol)
 
     def add_propellants(self, propellant_list):
+        '''
+        Addes a list of propellants to the pre-equilibrium mixture.
+        propellant_list is a list of (propellant, mol) tuples as are passed
+        in to add_propellant().  Example:
+            add_propellants([
+                            (pypropep.PROPELLANTS['METHANE'], 1.0),
+                            (pypropep.PROPELLANTS['OXYGEN (GAS)'], 1.0)])
+        '''
         self._equil_objs[0].add_propellants(propellant_list)
+
+    def add_propellants_by_mass(self, propellant_list):
+        '''
+        Addes a list of propellants to the pre-equilibrium mixture by mass.
+        This is equivalent to add_propellants except that quantity is specified
+        by mass not mols.
+        propellant_list is a list of (propellant, mol) tuples as are passed
+        in to add_propellant().  Example:
+            add_propellants([
+                            (pypropep.PROPELLANTS['METHANE'], 1.0),
+                            (pypropep.PROPELLANTS['OXYGEN (GAS)'], 1.0)])
+        '''
+        propellant_list_by_mol = []
+        for p, w in propellant_list:
+            N = w / p.mw
+            propellant_list_by_mol.append((p, N))
+        self.add_propellants(propellant_list_by_mol)
 
     def set_state(self):
         for e in self._equil_objs:

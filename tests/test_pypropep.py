@@ -24,3 +24,8 @@ def test_prop_file_override(pypropep):
 def test_thermo_file_override(pypropep):
     therm_file = os.path.dirname(pypropep.__file__) + '/data/thermo.dat'
     pypropep.init(thermo_file=therm_file)
+
+
+def test_find_propellant(pypropep):
+    assert len(pypropep.find_propellant('oxygen')) > 1
+    assert len(pypropep.find_propellant('OXYGEN')) > 1

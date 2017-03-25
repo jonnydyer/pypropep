@@ -49,6 +49,8 @@ def test_TP_composition(pypropep):
 
     # Compostion should be None prior to equilibration
     assert e.composition is None
+    assert e.composition_sorted is None
+    assert e.composition_condensed is None
 
     # equilibrate
     e.set_state(P=1.0, T=273., type='TP')
@@ -71,6 +73,13 @@ def test_HP_equil(pypropep):
     assert e.properties_computed is True
     assert e.properties.T > 300.
 
+def test_condensing_equil(pypropep):
+    kno3 = pypropep.PROPELLANTS['POTASSIUM NITRATE']
+    sugar = pypropep.PROPELLANTS['SUCROSE (TABLE SUGAR)']
+    p = pypropep.Equilibrium()
+    p.add_propellants([(kno3, 0.65/kno3.mw), (sugar, 0.35/sugar.mw)])
+    p.set_state(P=30)
+    assert len(p.composition_condensed) > 0
 # def test_SP_equil(pypropep):
 #     e = pypropep.Equilibrium()
 #     o2 = pypropep.PROPELLANTS['OXYGEN (GAS)']

@@ -26,6 +26,11 @@ class Equilibrium(object):
         del self._equil
 
     def add_propellant(self, propellant, mol):
+        '''
+        Addes propellant to the pre-equilibrium mixture.
+        propellant must be a Propellant instance and mol is the number of
+        mols.
+        '''
         try:
             lib.add_in_propellant(self._equil, propellant['id'], mol)
             self.propellants.append(propellant)
@@ -36,8 +41,12 @@ class Equilibrium(object):
 
     def add_propellants(self, propellant_list):
         '''
-        Propellant list must be a list of tuples with:
-        [(Propellant_1, mol_1), ..., (Propellant_n, mol_n)]
+        Addes a list of propellants to the pre-equilibrium mixture.
+        propellant_list is a list of (propellant, mol) tuples as are passed
+        in to add_propellant().  Example:
+            add_propellants([
+                            (pypropep.PROPELLANTS['METHANE'], 1.0),
+                            (pypropep.PROPELLANTS['OXYGEN (GAS)'], 1.0)])
         '''
         for p, m in propellant_list:
             self.add_propellant(p, m)
@@ -70,6 +79,12 @@ class Equilibrium(object):
             return None
         return sorted(self._composition.items(), key=operator.itemgetter(1),
                       reverse=True)
+
+    @property
+    def composition_condensed(self):
+        if self.equilibrated is False:
+            return None
+        return self._composition_condensed
 
 
     def _compute_product_composition(self):

@@ -97,4 +97,4 @@ def init(thermo_file=None, propellant_file=None):
 
 def find_propellant(substr):
     return [value for key, value in PROPELLANTS.items()
-                        if substr in key.lower()]
+                        if substr.lower() in key.lower()]
