@@ -9,6 +9,10 @@ The RocketWorkBench (and hence cpropep) project hasn't seen any activity in clos
 ## Version 0.1
 Today, this module is at v0.1.  It is only tested and guaranteed to work on Python 2.7 (something I hope to fix for the next release) and requires the users machine to have a compiler available for installation (also hope to fix for 0.2).  Otherwise, it is fairly functional.
 
+# Installation
+
+TBD
+
 # Usage
 
 ## Basic Usage
@@ -50,5 +54,6 @@ More detailed examples demonstrating the utility of the library are given in the
 There are several things I'd like to add to this module for the v0.2 release including:
 
 - Setting up [Python Wheels](http://pythonwheels.com/) distribution so that installation doesn't require local compiling
+- Setting up an [Anaconda](https://www.continuum.io/anaconda-overview) distribution for the module
 - Supporting Python versions other than 2.7 in both test and deployment
 - Adding Finite Area Contraction-ratio (FAC) support to cpropep library and python interface
