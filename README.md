@@ -1,4 +1,4 @@
-# pypropep v0.1
+# pypropep
 [![Build Status](https://travis-ci.org/jonnydyer/pypropep.svg?branch=master)](https://travis-ci.org/jonnydyer/pypropep)
 [![Coverage Status](https://coveralls.io/repos/github/jonnydyer/pypropep/badge.svg?branch=master)](https://coveralls.io/github/jonnydyer/pypropep?branch=master)
 
@@ -11,7 +11,9 @@ Today, this module is at v0.1.  It is only tested and guaranteed to work on Pyth
 
 # Installation
 
-TBD
+## Pip
+
+## Conda
 
 # Usage
 
@@ -31,16 +33,16 @@ Here is a brief example of how to use pypropep::
     >>> sp.add_propellants_by_mass([(ch4, 1.0), (o2, OF)])
     >>> sp.set_state(P=50., Pe=1.)     # Pressure in atm
     
-    >>> print sp.performance.cstar
+    >>> print sp.performance.cstar      # in m/s
     1892.82959658
     
     >>> print sp.performance.cf
     1.57123484882
     
-    >>> print sp.performance.Isp/9.8
+    >>> print sp.performance.Isp/9.8      # in seconds
     303.477533166
     
-    >>> print sp.performance.cstar * sp.performance.cf / 9.8
+    >>> print sp.performance.cstar * sp.performance.cf / 9.8     # in seconds
     303.477533166
 
 ## iPython examples
