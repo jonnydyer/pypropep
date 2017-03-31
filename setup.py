@@ -10,6 +10,7 @@ setup(
     license='GPLv3',
     author='Jonny Dyer',
     author_email='jonny.dyer@gmail.com',
+    url='https://github.com/jonnydyer/pypropep',
     packages=['pypropep', 'pypropep.cpropep'],
     package_data={"pypropep" : ["data/*.dat"]},
     setup_requires=["cffi>=1.0.0"],
