@@ -9,26 +9,26 @@ The RocketWorkBench (and hence cpropep) project hasn't seen any activity in clos
 # Usage
 
 ## Basic Usage
-Here is a brief example of how to use pypropep:
+Here is a brief example of how to use pypropep::
 
-  >>> import pypropep as ppp
-  >>> ppp.init()
-  Loaded 1921 thermo species
-  Loaded 1030 propellants
-  >>> o2 = ppp.PROPELLANTS['OXYGEN (GAS)']
-  >>> ch4 = ppp.PROPELLANTS['METHANE']
-  >>> sp = ppp.ShiftingPerformance()
-  >>> OF = 2.8
-  >>> sp.add_propellants_by_mass([(ch4, 1.0), (o2, OF)])
-  >>> sp.set_state(P=50., Pe=1.)
-  >>> print sp.performance.cstar
-  1892.82959658
-  >>> print sp.performance.cf
-  1.57123484882
-  >>> print sp.performance.Isp/9.8
-  303.477533166
-  >>> print sp.performance.cstar * sp.performance.cf / 9.8
-  303.477533166
+    >>> import pypropep as ppp
+    >>> ppp.init()
+    Loaded 1921 thermo species
+    Loaded 1030 propellants
+    >>> o2 = ppp.PROPELLANTS['OXYGEN (GAS)']
+    >>> ch4 = ppp.PROPELLANTS['METHANE']
+    >>> sp = ppp.ShiftingPerformance()
+    >>> OF = 2.8
+    >>> sp.add_propellants_by_mass([(ch4, 1.0), (o2, OF)])
+    >>> sp.set_state(P=50., Pe=1.)
+    >>> print sp.performance.cstar
+    1892.82959658
+    >>> print sp.performance.cf
+    1.57123484882
+    >>> print sp.performance.Isp/9.8
+    303.477533166
+    >>> print sp.performance.cstar * sp.performance.cf / 9.8
+    303.477533166
 
 ## iPython examples
 The best intro to this library is an [iPython Notebook included in the repo](ipython_doc/BasicUsage.ipynb).  Git will kindly render it for you if you don't want to run it yourself.
