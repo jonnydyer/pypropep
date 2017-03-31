@@ -29,7 +29,7 @@ Here is a brief example of how to use pypropep::
     
     >>> OF = 2.8
     >>> sp.add_propellants_by_mass([(ch4, 1.0), (o2, OF)])
-    >>> sp.set_state(P=50., Pe=1.)
+    >>> sp.set_state(P=50., Pe=1.)     # Pressure in atm
     
     >>> print sp.performance.cstar
     1892.82959658
