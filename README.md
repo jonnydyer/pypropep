@@ -11,10 +11,23 @@ Today, this module is at v0.1.  It is only tested and guaranteed to work on Pyth
 
 # Installation
 
+Currently the two methods for installing pypropep are pip and from source using setuptools.  Pip is recommended.
+
 ## Pip
+Not much to it -
+
+    pip install pypropep
+
+## From source
+
+    git clone https://github.com/jonnydyer/pypropep.git
+    cd pypropep
+    python setup.py install
 
 ## Conda
 
+    Coming soon...
+    
 # Usage
 
 ## Basic Usage
