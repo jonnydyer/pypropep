@@ -1,8 +1,8 @@
 import re
 import numpy as np
 import operator
-from cpropep._cpropep import ffi, lib
-from error import RET_ERRORS
+from .cpropep._cpropep import ffi, lib
+from .error import RET_ERRORS
 
 __all__ = ['Equilibrium']
 
@@ -77,7 +77,7 @@ class Equilibrium(object):
     def composition_sorted(self):
         if self.equilibrated is False:
             return None
-        return sorted(self._composition.items(), key=operator.itemgetter(1),
+        return sorted(list(self._composition.items()), key=operator.itemgetter(1),
                       reverse=True)
 
     @property
@@ -92,16 +92,16 @@ class Equilibrium(object):
             raise RuntimeError("Can't compute product composition until \
                                equilibrum is computed")
         mol_g = self._equil.itn.n
-        for i in xrange(self._equil.product.n[lib.CONDENSED]):
+        for i in range(self._equil.product.n[lib.CONDENSED]):
             mol_g += self._equil.product.coef[lib.CONDENSED][i]
 
-        for i in xrange(self._equil.product.n[lib.GAS]):
+        for i in range(self._equil.product.n[lib.GAS]):
             ind = self._equil.product.species[lib.GAS][i]
             name = ffi.string(lib.thermo_list[ind].name)
             self._composition[name] = \
                 self._equil.product.coef[lib.GAS][i] / mol_g
 
-        for i in xrange(self._equil.product.n[lib.CONDENSED]):
+        for i in range(self._equil.product.n[lib.CONDENSED]):
             ind = self._equil.product.species[lib.CONDENSED][i]
             name = ffi.string(lib.thermo_list[ind].name)
             self._composition_condensed[name] = \
@@ -165,7 +165,7 @@ class Equilibrium(object):
         s += "\tProperties Computed: {}\n".format(str(self.properties_computed))
         s += "\tPerformance Computed: {}\n".format(str(self.performance_computed))
         s += "Composition:\n"
-        for i in xrange(self._equil.propellant.ncomp):
+        for i in range(self._equil.propellant.ncomp):
             ind = self._equil.propellant.molecule[i]
             name = ffi.string(lib.propellant_list[ind].name)
             s += "\t{} - {:.3f} mol\n".format(name,

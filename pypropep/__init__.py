@@ -1,6 +1,6 @@
 import os
 from attrdict import AttrDict
-from cpropep._cpropep import ffi, lib
+from .cpropep._cpropep import ffi, lib
 
 from pypropep.propellant import Propellant
 from pypropep.equilibrium import Equilibrium
@@ -55,22 +55,22 @@ def init(thermo_file=None, propellant_file=None):
 
     r = lib.load_thermo(THERMO_FILE)
     if r > 0:
-        print "Loaded {} thermo species".format(r)
+        print("Loaded {} thermo species".format(r))
     else:
-        print "Failed to load thermo file {}".format(THERMO_FILE)
+        print("Failed to load thermo file {}".format(THERMO_FILE))
 
     r = lib.load_propellant(PROPELLANT_FILE)
 
     if r > 0:
-        print "Loaded {} propellants".format(r)
+        print("Loaded {} propellants".format(r))
     else:
-        print "Failed to load propellant file {}".format(PROPELLANT_FILE)
+        print("Failed to load propellant file {}".format(PROPELLANT_FILE))
 
     SPECIES = dict()
     PROPELLANTS = dict()
 
     # Build species dict
-    for i in xrange(lib.num_thermo):
+    for i in range(lib.num_thermo):
         s = lib.thermo_list[i]
         l = len(SPECIES)
         name = ffi.string(s.name)
@@ -83,7 +83,7 @@ def init(thermo_file=None, propellant_file=None):
                                                             str(SPECIES[name])))
 
     # Build propellants dict
-    for i in xrange(lib.num_propellant):
+    for i in range(lib.num_propellant):
         p = lib.propellant_list[i]
         name = ffi.string(p.name)
         l = len(PROPELLANTS)
@@ -96,5 +96,5 @@ def init(thermo_file=None, propellant_file=None):
                                                 name, str(PROPELLANTS[name])))
 
 def find_propellant(substr):
-    return [value for key, value in PROPELLANTS.items()
+    return [value for key, value in list(PROPELLANTS.items())
                         if substr.lower() in key.lower()]

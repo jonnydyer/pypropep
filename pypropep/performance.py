@@ -1,5 +1,5 @@
 import re
-from cpropep._cpropep import ffi, lib
+from .cpropep._cpropep import ffi, lib
 from pypropep.equilibrium import Equilibrium
 from pypropep.error import RET_ERRORS
 
@@ -17,21 +17,21 @@ class RocketPerformance(object):
         super(RocketPerformance, self).__init__()
         self._equil_structs = ffi.new("equilibrium_t[3]")
         self._equil_objs = list()
-        for i in xrange(3):
+        for i in range(3):
             e = ffi.addressof(self._equil_structs[i])
             self._equil_objs.append(Equilibrium(e))
 
     @property
     def equilibrated(self):
         equilibrated = False
-        for i in xrange(3):
+        for i in range(3):
             equilibrated = equilibrated and self._equil_objs[i].equilibrated
         return equilibrated
 
     @property
     def properties_computed(self):
         properties_computed = False
-        for i in xrange(3):
+        for i in range(3):
             properties_computed = properties_computed and \
                 self._equil_objs[i].properties_computed
         return properties_computed
@@ -39,7 +39,7 @@ class RocketPerformance(object):
     @property
     def performance_computed(self):
         computed = False
-        for i in xrange(3):
+        for i in range(3):
             computed = computed and self._equil_objs[i].performance_computed
         return computed
 
@@ -114,7 +114,7 @@ class RocketPerformance(object):
         s += "\tProperties Computed: {}\n".format(str(self.properties_computed))
         s += "\tPerformance Computed: {}\n".format(str(self.performance_computed))
         s += "Composition:\n"
-        for i in xrange(self._equil_structs[0].propellant.ncomp):
+        for i in range(self._equil_structs[0].propellant.ncomp):
             ind = self._equil_structs[0].propellant.molecule[i]
             name = ffi.string(lib.propellant_list[ind].name)
             s += "\t{} - {:.3f} mol\n".format(name,

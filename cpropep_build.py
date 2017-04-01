@@ -5,6 +5,8 @@ from glob import glob
 
 ffibuilder = FFI()
 
+exclude_c_files = 'test'
+
 cpropep_libs = ['libnum', 'libthermo', 'libcpropep', 'libcompat']
 inc_dir = [('pypropep/cpropep/' + d + '/include/') for d in cpropep_libs]
 

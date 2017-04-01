@@ -1,4 +1,4 @@
-from cpropep._cpropep import ffi, lib
+from .cpropep._cpropep import ffi, lib
 
 __all__ = ['Propellant']
 
@@ -66,7 +66,7 @@ class Propellant(dict):
         if element in EL_SYMBOLS:
             el_ind = EL_SYMBOLS.index(element)
         else:
-            print 'blah'
+            print('blah')
             RuntimeWarning("Element {0} does not exist".format(element))
             return 0
 
