@@ -62,7 +62,7 @@ Here is a brief example of how to use pypropep::
 More detailed examples demonstrating the utility of the library are given in the form of two Jupyter notebooks (kindly rendered here by Git!)
 
 - [Basic Usage and Background](ipython_doc/BasicUsage.ipynb)
-- [Rocket Performance Examples](ipython_doc/ipython_doc/BasicRocketPerformance.ipynb)
+- [Rocket Performance Examples](ipython_doc/BasicRocketPerformance.ipynb)
 
 # Roadmap
 
