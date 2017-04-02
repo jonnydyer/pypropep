@@ -66,9 +66,12 @@ More detailed examples demonstrating the utility of the library are given in the
 
 # Roadmap
 
+## v0.2
 There are several things I'd like to add to this module for the v0.2 release including:
 
-- Setting up [Python Wheels](http://pythonwheels.com/) distribution so that installation doesn't require local compiling
-- Setting up an [Anaconda](https://www.continuum.io/anaconda-overview) distribution for the module
-- Supporting Python versions other than 2.7 in both test and deployment
-- Adding Finite Area Contraction-ratio (FAC) support to cpropep library and python interface
+- Set up [Python Wheels](http://pythonwheels.com/) distribution so that installation doesn't require local compiling
+- Set up an [Anaconda](https://www.continuum.io/anaconda-overview) distribution for the module
+- Support Python versions other than 2.7 in both test and deployment
+
+## v0.3
+- Add Finite Area Contraction-ratio (FAC) support to cpropep library and python interface

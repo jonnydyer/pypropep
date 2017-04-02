@@ -116,7 +116,7 @@ class RocketPerformance(object):
         s += "Composition:\n"
         for i in range(self._equil_structs[0].propellant.ncomp):
             ind = self._equil_structs[0].propellant.molecule[i]
-            name = ffi.string(lib.propellant_list[ind].name)
+            name = ffi.string(lib.propellant_list[ind].name).decode('utf-8')
             s += "\t{} - {:.3f} mol\n".format(name,
                                               self._equil_structs[0].propellant.coef[i])
 

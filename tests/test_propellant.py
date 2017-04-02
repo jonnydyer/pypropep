@@ -8,7 +8,7 @@ def pypropep():
     return pypropep
 
 def test_propellant_str(pypropep):
-    assert 'Propellant' in pypropep.PROPELLANTS[pypropep.PROPELLANTS.keys()[0]].__str__()
+    assert 'Propellant' in pypropep.PROPELLANTS[list(pypropep.PROPELLANTS.keys())[0]].__str__()
 
 def test_atoms_of(pypropep):
     p = pypropep.PROPELLANTS['METHANE']

@@ -37,7 +37,7 @@ def convert_to_python(s):
     elif type.kind == 'array':
         if type.item.kind == 'primitive':
             if type.item.cname == 'char':
-                return ffi.string(s)
+                return ffi.string(s).decode('utf-8')
             else:
                 return [s[i] for i in range(type.length)]
         else:
@@ -53,13 +53,13 @@ def init(thermo_file=None, propellant_file=None):
     if propellant_file is not None:
         PROPELLANT_FILE = propellant_file
 
-    r = lib.load_thermo(THERMO_FILE)
+    r = lib.load_thermo(THERMO_FILE.encode('utf-8'))
     if r > 0:
         print("Loaded {} thermo species".format(r))
     else:
         print("Failed to load thermo file {}".format(THERMO_FILE))
 
-    r = lib.load_propellant(PROPELLANT_FILE)
+    r = lib.load_propellant(PROPELLANT_FILE.encode('utf-8'))
 
     if r > 0:
         print("Loaded {} propellants".format(r))
@@ -73,7 +73,7 @@ def init(thermo_file=None, propellant_file=None):
     for i in range(lib.num_thermo):
         s = lib.thermo_list[i]
         l = len(SPECIES)
-        name = ffi.string(s.name)
+        name = ffi.string(s.name).decode('utf-8')
         while name in SPECIES:
             name += "'"
         SPECIES[name] = AttrDict(convert_to_python(s))
@@ -85,7 +85,7 @@ def init(thermo_file=None, propellant_file=None):
     # Build propellants dict
     for i in range(lib.num_propellant):
         p = lib.propellant_list[i]
-        name = ffi.string(p.name)
+        name = ffi.string(p.name).decode('utf-8')
         l = len(PROPELLANTS)
         while name in PROPELLANTS:
             name += "'"

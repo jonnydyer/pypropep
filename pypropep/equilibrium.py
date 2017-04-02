@@ -97,13 +97,13 @@ class Equilibrium(object):
 
         for i in range(self._equil.product.n[lib.GAS]):
             ind = self._equil.product.species[lib.GAS][i]
-            name = ffi.string(lib.thermo_list[ind].name)
+            name = ffi.string(lib.thermo_list[ind].name).decode('utf-8')
             self._composition[name] = \
                 self._equil.product.coef[lib.GAS][i] / mol_g
 
         for i in range(self._equil.product.n[lib.CONDENSED]):
             ind = self._equil.product.species[lib.CONDENSED][i]
-            name = ffi.string(lib.thermo_list[ind].name)
+            name = ffi.string(lib.thermo_list[ind].name).decode('utf-8')
             self._composition_condensed[name] = \
                 self._equil.product.coef[lib.CONDENSED][i] / mol_g
 
@@ -167,7 +167,7 @@ class Equilibrium(object):
         s += "Composition:\n"
         for i in range(self._equil.propellant.ncomp):
             ind = self._equil.propellant.molecule[i]
-            name = ffi.string(lib.propellant_list[ind].name)
+            name = ffi.string(lib.propellant_list[ind].name).decode('utf-8')
             s += "\t{} - {:.3f} mol\n".format(name,
                                               self._equil.propellant.coef[i])
         s += "State:\n"

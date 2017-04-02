@@ -18,7 +18,7 @@ def test_add_propellant(pypropep):
     o2 = pypropep.PROPELLANTS['OXYGEN (GAS)']
     ch4 = pypropep.PROPELLANTS['METHANE']
     e.add_propellants([(o2, 1.), (ch4, 1.)])
-    print e
+    print(e)
 
 def test_equil_modes(pypropep):
     e = pypropep.Equilibrium()
@@ -45,7 +45,7 @@ def test_TP_composition(pypropep):
     n2 = pypropep.PROPELLANTS['NITROGEN (GASEOUS)']
     e.add_propellant(n2, 1.0)
     with pytest.raises(RuntimeError):
-        print e._compute_product_composition()
+        print(e._compute_product_composition())
 
     # Compostion should be None prior to equilibration
     assert e.composition is None
@@ -57,7 +57,7 @@ def test_TP_composition(pypropep):
     assert e.equilibrated is True
     assert e.properties_computed is True
     assert 'N2' in e.composition
-    for k,v in e.composition.items():
+    for k,v in list(e.composition.items()):
         if k == 'N2':
             assert v == pytest.approx(1.0, 1e-6)
         else:

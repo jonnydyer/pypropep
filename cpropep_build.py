@@ -5,7 +5,7 @@ from glob import glob
 
 ffibuilder = FFI()
 
-exclude_c_files = 'test'
+exclude_c_files = ['test.c']
 
 cpropep_libs = ['libnum', 'libthermo', 'libcpropep', 'libcompat']
 inc_dir = [('pypropep/cpropep/' + d + '/include/') for d in cpropep_libs]
@@ -16,7 +16,12 @@ MAX_COMP     = 20
 
 src_files = []
 for l in cpropep_libs:
-    src_files += glob('pypropep/cpropep/' + l + '/src/*.c')
+    prefix = 'pypropep/cpropep/' + l + '/src/'
+    src_files += glob(prefix + '*.c')
+    for ef in exclude_c_files:
+        if (prefix + ef) in src_files:
+            print('Excluding {} from source list'.format(prefix+ef))
+            src_files.remove(prefix + ef)
 
 inc_files = ''
 for i in inc_dir:
