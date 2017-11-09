@@ -9,7 +9,7 @@ def pypropep():
 
 
 def test_propellants_dict(pypropep):
-    assert len(pypropep.PROPELLANTS) == 1030
+    assert len(pypropep.PROPELLANTS) == 1031
 
 
 def test_thermo_dict(pypropep):
