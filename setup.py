@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="pypropep",
-    version='0.1.1',
+    version='0.1.2',
     description='Python wrapper for cpropep rocket performance tool',
     license='GPLv3',
     author='Jonny Dyer',

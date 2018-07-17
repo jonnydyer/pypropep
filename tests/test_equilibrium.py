@@ -20,6 +20,14 @@ def test_add_propellant(pypropep):
     e.add_propellants([(o2, 1.), (ch4, 1.)])
     print(e)
 
+
+def test_add_propellants_by_mass(pypropep):
+    e = pypropep.Equilibrium()
+    o2 = pypropep.PROPELLANTS['OXYGEN (GAS)']
+    ch4 = pypropep.PROPELLANTS['METHANE']
+    e.add_propellants_by_mass([(o2, 1.), (ch4, 1.)])
+    print(e)
+
 def test_equil_modes(pypropep):
     e = pypropep.Equilibrium()
     with pytest.raises(ValueError):

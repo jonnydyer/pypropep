@@ -51,6 +51,23 @@ class Equilibrium(object):
         for p, m in propellant_list:
             self.add_propellant(p, m)
 
+    def add_propellants_by_mass(self, propellant_list):
+        '''
+        Addes a list of propellants to the pre-equilibrium mixture by mass.
+        This is equivalent to add_propellants except that quantity is specified
+        by mass not mols.
+        propellant_list is a list of (propellant, mol) tuples as are passed
+        in to add_propellant().  Example:
+            add_propellants([
+                            (pypropep.PROPELLANTS['METHANE'], 1.0),
+                            (pypropep.PROPELLANTS['OXYGEN (GAS)'], 1.0)])
+        '''
+        propellant_list_by_mol = []
+        for p, w in propellant_list:
+            N = w / p.mw
+            propellant_list_by_mol.append((p, N))
+        self.add_propellants(propellant_list_by_mol)
+
     @property
     def properties_computed(self):
         return bool(self._equil.properties_ok)
