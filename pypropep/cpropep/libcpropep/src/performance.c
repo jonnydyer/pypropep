@@ -122,11 +122,6 @@ int frozen_performance(equilibrium_t *e, exit_condition_t exit_type,
   /* Simplification due to frozen equilibrium */
   e->properties.dV_T =  1.0;
   e->properties.dV_P = -1.0;
-  e->properties.Cp   = mixture_specific_heat_0(e, e->properties.T) * R;
-  e->properties.Cv   = e->properties.Cp - e->itn.n * R;
-  e->properties.Isex = e->properties.Cp/e->properties.Cv;
-
-  compute_thermo_properties(e);
   
   chamber_entropy  = product_entropy(e);
   
@@ -144,12 +139,6 @@ int frozen_performance(equilibrium_t *e, exit_condition_t exit_type,
    
     t->properties.T = compute_temperature(t, e->properties.P/pc_pt,
                                           chamber_entropy);
-
-    /* Cp of the combustion point assuming frozen */
-    t->properties.Cp   = mixture_specific_heat_0(e, t->properties.T) * R;
-    /* Cv = Cp - nR  (for frozen) */
-    t->properties.Cv   = t->properties.Cp - t->itn.n * R;
-    t->properties.Isex = t->properties.Cp/t->properties.Cv;
 
     compute_thermo_properties(t);
     
@@ -240,11 +229,6 @@ int frozen_performance(equilibrium_t *e, exit_condition_t exit_type,
       ex->properties.P = exit_pressure   = e->properties.P/pc_pe;
       ex->properties.T = compute_temperature(e, exit_pressure,
                                              chamber_entropy);
-      /* Cp of the combustion point assuming frozen */
-      ex->properties.Cp   = mixture_specific_heat_0(e, ex->properties.T) * R;
-      /* Cv = Cp - nR  (for frozen) */
-      ex->properties.Cv   = ex->properties.Cp - ex->itn.n * R;
-      ex->properties.Isex = ex->properties.Cp/ex->properties.Cv;
       
       compute_thermo_properties(ex);
     
@@ -299,12 +283,6 @@ int frozen_performance(equilibrium_t *e, exit_condition_t exit_type,
   /* units are (m/s/atm) */
   ex->performance.a_dotm = 1000 * R * ex->properties.T * ex->itn.n /
     (ex->properties.P * ex->performance.Isp);
-
-  /* Cp of the combustion point assuming frozen */
-  ex->properties.Cp   = mixture_specific_heat_0(e, ex->properties.T) * R;
-  /* Cv = Cp - nR  (for frozen) */
-  ex->properties.Cv   = ex->properties.Cp - ex->itn.n * R;
-  ex->properties.Isex = ex->properties.Cp/ex->properties.Cv;
 
   compute_thermo_properties(ex);
   

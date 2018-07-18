@@ -46,3 +46,26 @@ def test_frozen_performance(pypropep):
     assert p.composition['exit'][0][1] > 0.1
     assert len(p.composition_condensed['exit']) == 0
     print(p)
+
+def test_properties(pypropep):
+    p = pypropep.FrozenPerformance()
+    ps = pypropep.ShiftingPerformance()
+    e = pypropep.Equilibrium()
+    lh2 = pypropep.PROPELLANTS['RP-1 (RPL)']
+    lox = pypropep.PROPELLANTS['OXYGEN (LIQUID)']
+    OF = 0.13
+    p.add_propellants_by_mass([(lh2, 1.0), (lox, OF)])
+    p.set_state(P=30, Ae_At=25.)
+    ps.add_propellants_by_mass([(lh2, 1.0), (lox, OF)])
+    ps.set_state(P=30, Ae_At=25.)
+    e.add_propellants_by_mass([(lh2, 1.0), (lox, OF)])
+    e.set_state(P=30, type='HP')
+    assert p.properties[0].T == pytest.approx(ps.properties[0].T, 1e-2)
+    assert p.properties[0].Cp == pytest.approx(ps.properties[0].Cp, 1e-2)
+    assert p.properties[0].Isex == pytest.approx(ps.properties[0].Isex, 1e-2)
+    assert p.properties[0].Cv == pytest.approx(ps.properties[0].Cv, 1e-2)
+
+    assert p.properties[0].T == pytest.approx(e.properties.T, 1e-2)
+    assert p.properties[0].Cp == pytest.approx(e.properties.Cp, 1e-2)
+    assert p.properties[0].Isex == pytest.approx(e.properties.Isex, 1e-2)
+    assert p.properties[0].Cv == pytest.approx(e.properties.Cv, 1e-2)

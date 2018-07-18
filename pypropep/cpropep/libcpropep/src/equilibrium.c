@@ -301,6 +301,10 @@ int compute_thermo_properties(equilibrium_t *e)
   pr->G = (product_enthalpy(e) - product_entropy(e)) * R * pr->T;
   pr->S = product_entropy(e) * R;  
   pr->M = product_molar_mass(e);
+  pr->Cp   = mixture_specific_heat_0(e, pr->T) * R;
+  pr->Cv   = pr->Cp - e->itn.n * R;
+  pr->Isex = pr->Cp/pr->Cv;
+
   e->properties_ok = true;
   return 0;
 }
@@ -1252,6 +1256,7 @@ int equilibrium(equilibrium_t *equil, problem_t P)
 
   equil->product.isequil = true;
   equil->equilibrium_ok = true;
+
   compute_thermo_properties(equil); 
   derivative(equil);
   
