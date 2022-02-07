@@ -1098,3 +1098,5 @@ E   1040 ZIRCONIUM                       1ZR  0    0    0    0    0      0 .2311
     1098 EICOSANE (PARAFFIN)            20C  42H   0    0    0    0   -469 .0000]
     1099 PROPANE (NIST                   8H   3C   0    0    0    0   -568 .0000]
 +   1100 HTPE                           27C  51H   8O   1N   0    0   -140 .0000]
+    1101 CYCLOPROPANE                    6H   3C   0    0    0    0    303 .0246]
+
